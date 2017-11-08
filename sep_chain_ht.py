@@ -6,21 +6,24 @@
 
 class MyHashTable:
 
+
     def __init__(self, table_size = 11):
         self.table = [[] for _ in range(table_size)]
         self.num_items = 0
         self.num_collisions = 0
 
     def insert(self, key, item):
+        table_idx = key % len(self.table)
+        if len(self.table[table_idx]) == 1:
+            self.num_collisions += 1
+        for entry_idx in range(len(self.table[table_idx])):
+            if self.table[table_idx][entry_idx][0] == key:
+                self.table[table_idx][entry_idx] = (key, item)
+                self.num_collisions -= 1
+                return
         self.num_items += 1
         if self.load_factor() > 1.5:
             self.grow_table()
-        table_idx = key % len(self.table)
-        for entry_idx in range(len(self.table[table_idx])):
-            self.num_collisions += 1
-            if self.table[table_idx][entry_idx][0] == key:
-                self.table[table_idx][entry_idx] = (key, item)
-                return
         self.table[table_idx].append((key, item))
 
     def grow_table(self):
@@ -54,6 +57,7 @@ class MyHashTable:
 
     def collisions(self):
         return self.num_collisions
+
 
     def __setitem__(self, key, item):
         self.insert(key, item)
