@@ -5,68 +5,68 @@
 # Term:        Fall 2017
 
 import unittest
-import sep_chain_ht
+from sep_chain_ht import MyHashTable
 
 class TestLab8(unittest.TestCase):
 
+
     def test_insert(self):
-        hash_table = sep_chain_ht.MyHashTable()
-        hash_table.insert(12, "dog")
-        self.assertEqual(hash_table.get(12), (12, "dog"))
-        self.assertEqual(hash_table.size(), 1)
-        hash_table.insert(12, "cat")
-        self.assertEqual(hash_table.get(12), (12, "cat"))
-        self.assertEqual(hash_table.size(), 1)
+        h = MyHashTable()
+        h[12] = "dog"
+        self.assertEqual(h[12], (12, "dog"))
+        self.assertEqual(h.size(), 1)
+        h[12] = "cat"
+        self.assertEqual(h[12], (12, "cat"))
+        self.assertEqual(h.size(), 1)
 
     def test_get(self):
-        hash_table = sep_chain_ht.MyHashTable()
-        hash_table.insert(12, "dog")
-        self.assertEqual(hash_table.get(12), (12, "dog"))
+        h = MyHashTable()
+        h[12] = "dog"
+        self.assertEqual(h[12], (12, "dog"))
         with self.assertRaises(LookupError):
-            hash_table.get(13)
+            h[13]
 
     def test_remove(self):
-        hash_table = sep_chain_ht.MyHashTable()
-        hash_table.insert(12, "dog")
-        self.assertEqual(hash_table.remove(12), (12, "dog"))
-        self.assertEqual(hash_table.size(), 0)
+        h = MyHashTable()
+        h[12] = "dog"
+        self.assertEqual(h.remove(12), (12, "dog"))
+        self.assertEqual(h.size(), 0)
         with self.assertRaises(LookupError):
-            hash_table.remove(13)
+            h.remove(13)
 
     def test_size(self):
-        hash_table = sep_chain_ht.MyHashTable()
+        h = MyHashTable()
         for i in range(1, 20):
-            hash_table.insert(i, "random")
-            self.assertEqual(i, hash_table.size())
+            h[i] = "random"
+            self.assertEqual(i, h.size())
 
     def test_load_factor(self):
-        hash_table = sep_chain_ht.MyHashTable()
+        h = MyHashTable()
         for i in range(1, 10):
-            hash_table.insert(i, "random")
-            self.assertEqual(i / 11, hash_table.load_factor())
+            h[i] = "random"
+            self.assertEqual(i / 11, h.load_factor())
 
     def test_collisions(self):
-        hash_table = sep_chain_ht.MyHashTable()
-        hash_table.insert(1, "cat")
-        self.assertEqual(hash_table.collisions(), 0)
-        hash_table.insert(12, "cat")
-        self.assertEqual(hash_table.collisions(), 1)
-        hash_table.insert(2, "cat")
-        self.assertEqual(hash_table.collisions(), 1)
-        hash_table.insert(23, "cat")
-        self.assertEqual(hash_table.collisions(), 1)
-        hash_table.insert(2, "dog")
-        self.assertEqual(hash_table.collisions(), 1)
+        h = MyHashTable()
+        h[1] = "cat"
+        self.assertEqual(h.collisions(), 0)
+        h[12] = "cat"
+        self.assertEqual(h.collisions(), 1)
+        h[2] = "cat"
+        self.assertEqual(h.collisions(), 1)
+        h[23] = "cat"
+        self.assertEqual(h.collisions(), 1)
+        h[2] = "dog"
+        self.assertEqual(h.collisions(), 1)
 
     def test_grow_table(self):
-        hash_table = sep_chain_ht.MyHashTable(5)
+        h = MyHashTable(5)
         for i in range(7):
-            hash_table.insert(i, "random")
-        self.assertEqual(hash_table.load_factor(), 7 / 5)
-        hash_table.insert(7, "random")
-        self.assertEqual(hash_table.load_factor(), 8 / 11)
+            h[i] = "random"
+        self.assertEqual(h.load_factor(), 7 / 5)
+        h[7] = "random"
+        self.assertEqual(h.load_factor(), 8 / 11)
 
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -58,6 +58,7 @@ class MyHashTable:
     def collisions(self):
         return self.num_collisions
 
+    #Below are additional methods I was using to test
 
     def __setitem__(self, key, item):
         self.insert(key, item)
